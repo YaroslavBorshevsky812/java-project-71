@@ -15,6 +15,10 @@ public class Differ {
                     .toAbsolutePath().normalize();
     }
 
+    public static String getSomethingForTest(String testString) {
+        return testString;
+    }
+
     public static String readFile(String fileName) throws Exception {
         var path = getFilePath(fileName);
         return Files.readString(path).trim();
