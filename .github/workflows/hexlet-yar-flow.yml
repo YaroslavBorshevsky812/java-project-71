@@ -1,5 +1,5 @@
 # file: .github/workflows/show-directory.yml
-name: hexlet
+name: Yar-CI
 # on – определяет события, которые запускают воркфлоу
 on: push
 jobs:
