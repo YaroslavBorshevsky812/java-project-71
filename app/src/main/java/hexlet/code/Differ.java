@@ -50,17 +50,15 @@ public class Differ {
 
                 if (!firstStringValue.equals(secondStringValue)) {
                     result.append(stringMinusKey).append(":").append(" ")
-                        .append(secondFileMap.get(key)).append("\n");
+                          .append(secondFileMap.get(key)).append("\n");
 
                     result.append(stringPlusKey).append(":").append(" ")
                           .append(entry.getValue()).append("\n");
                 }
             }
 
-
-
         }
 
         return "{" + "\n" + result + "}";
-    };
+    }
 }
