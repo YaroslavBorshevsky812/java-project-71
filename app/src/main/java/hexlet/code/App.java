@@ -4,8 +4,6 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-import java.util.TreeMap;
-
 @Command(
     name = "gendiff",
     mixinStandardHelpOptions = true,
@@ -26,10 +24,7 @@ public class App implements Runnable {
     @Override
     public void run() {
         try {
-            TreeMap<String, Object> firstMap = Differ.getData(Differ.readFile(filepath1));
-            TreeMap<String, Object> secondMap = Differ.getData(Differ.readFile(filepath2));
-
-            System.out.println(Differ.generate(firstMap, secondMap));
+            Differ.checkFormat(filepath1, filepath2);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

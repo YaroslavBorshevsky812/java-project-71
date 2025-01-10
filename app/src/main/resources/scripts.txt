@@ -1,0 +1,3 @@
+./build/install/app/bin/app filepath1.yml filepath2.yml
+./build/install/app/bin/app file1.json file2.json
+./build/install/app/bin/app nestedFile1.json nestedFile2.json
