@@ -1,10 +1,13 @@
-import hexlet.code.Differ;
+package hexlet.code;
+
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-public class DifferTest {
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class DifferTest {
 
     @Test
-    public void getFile() {
+    void getSomethingForTest() {
         Differ.getSomethingForTest("testFile");
         assertEquals("testFile", "testFile");
     }

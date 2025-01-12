@@ -9,8 +9,9 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class Differ {
 
@@ -27,94 +28,113 @@ public class Differ {
         return testString;
     }
 
-    public static String readFile(String fileName) throws Exception {
+    public static String readFile(String fileName) throws IOException {
         var path = getFilePath(fileName);
+
         return Files.readString(path).trim();
     }
 
-    public static TreeMap<String, Object> getJsonData(String jsonString) throws IOException {
+    public static Map<String, Object> getJsonData(String jsonString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        // Тут используем Tree чтобы получить сортировку.
-        return new TreeMap<String, Object>(mapper.readValue(jsonString, Map.class));
+        return mapper.readValue(jsonString, Map.class);
     }
 
-    public static TreeMap<String, Object> getYmlData(String fileName) throws IOException {
+    public static Map<String, Object> getYmlData(String fileName) throws IOException {
         var yamlFilePath = getFilePath(fileName);
         Yaml yaml = new Yaml();
         InputStream inputStream = new FileInputStream(String.valueOf(yamlFilePath));
-        Map<String, Object> yamlMap = yaml.load(inputStream);
-        // Тут используем Tree чтобы получить сортировку.
-        return new TreeMap<String, Object>(yamlMap);
+        return yaml.load(inputStream);
     }
 
-    public static void checkFormat(String firstFilePath, String secondFilePath) throws Exception {
+    public static List<DifferItem> prepareListAccordingToFormat(
+        String firstFilePath,
+        String secondFilePath,
+        String formatName
+    ) throws IOException {
 
-        if (firstFilePath.matches(FORMATS) && secondFilePath.matches(FORMATS)) {
+        List<DifferItem> result = new ArrayList<>();
+        boolean isFormatAcceptable = firstFilePath.matches(FORMATS) && secondFilePath.matches(FORMATS);
+        boolean isFormatsTheSame =
+            (firstFilePath.matches(YAML_FORMAT) && secondFilePath.matches(YAML_FORMAT)
+                || firstFilePath.matches(JSON_FORMAT) && secondFilePath.matches(JSON_FORMAT)
+            );
 
-            if (firstFilePath.matches(YAML_FORMAT) && secondFilePath.matches(YAML_FORMAT)) {
-                TreeMap<String, Object> firstMap = Differ.getYmlData(firstFilePath);
-                TreeMap<String, Object> secondMap = Differ.getYmlData(secondFilePath);
-
-                System.out.println(Differ.generate(firstMap, secondMap));
-                return;
-            }
-
-            if (firstFilePath.matches(JSON_FORMAT) && secondFilePath.matches(JSON_FORMAT)) {
-                TreeMap<String, Object> firstMap = Differ.getJsonData(Differ.readFile(firstFilePath));
-                TreeMap<String, Object> secondMap = Differ.getJsonData(Differ.readFile(secondFilePath));
-
-                System.out.println(Differ.generate(firstMap, secondMap));
-                return;
-            }
-
-            System.out.println("Разные форматы");
-
-        } else {
-            System.out.println("Формат не соответствует допустимому");
+        if (!isFormatAcceptable || !isFormatsTheSame) {
+            throw new IllegalArgumentException("Formats are not acceptable");
         }
+
+        if (firstFilePath.matches(YAML_FORMAT) && secondFilePath.matches(YAML_FORMAT)) {
+            Map<String, Object> firstMap = Differ.getYmlData(firstFilePath);
+            Map<String, Object> secondMap = Differ.getYmlData(secondFilePath);
+
+            result = Differ.generateDifferItemList(firstMap, secondMap, formatName);
+            return result;
+        }
+
+        if (firstFilePath.matches(JSON_FORMAT) && secondFilePath.matches(JSON_FORMAT)) {
+            Map<String, Object> firstMap = Differ.getJsonData(Differ.readFile(firstFilePath));
+            Map<String, Object> secondMap = Differ.getJsonData(Differ.readFile(secondFilePath));
+
+            result = Differ.generateDifferItemList(firstMap, secondMap, formatName);
+            return result;
+        }
+
+        return result;
     };
 
-    public static String generate(Map<String, Object> firstFileMap, Map<String, Object> secondFileMap) {
-        StringBuilder result = new StringBuilder();
+    public static String generate(String filePath1, String filePath2, String formatName) throws Exception {
+        List<DifferItem> differItemList = Differ.prepareListAccordingToFormat(filePath1, filePath2, formatName);
 
-        for (Map.Entry<String, Object> entry : firstFileMap.entrySet()) {
-            String key = entry.getKey();
-            String firstStringValue = entry.getValue() + "";
-            String secondStringValue = secondFileMap.get(key) + "";
+        return Formatter.getFormatter(differItemList, formatName);
+    };
 
-            String stringMinusKey = " " + " " + "- " + key;
-            String stringPlusKey = " " + " " + "+ " + key;
+    public static List<DifferItem> generateDifferItemList(
+        Map<String, Object> firstFileMap,
+        Map<String, Object> secondFileMap,
+        String formatName
+    ) {
+        List<DifferItem> resultDifferList = new ArrayList<>();
 
-            if (!secondFileMap.containsKey(key)) {
-                result.append(stringMinusKey).append(":").append(" ").append(entry.getValue()).append("\n");
+        for (String firstFileMapKey : firstFileMap.keySet()) {
+            // Objects.equals(arg1, arg2)
+            String firstMapValue = firstFileMap.get(firstFileMapKey) + "";
+            String secondMapValue = secondFileMap.get(firstFileMapKey) + "";
+
+            // Removal.
+            if (!secondFileMap.containsKey(firstFileMapKey)) {
+                DifferItem differItem =
+                    new DifferItem(firstFileMapKey, firstMapValue, Action.DELETED);
+                resultDifferList.add(differItem);
+
             } else {
-                if (firstStringValue.equals(secondStringValue)) {
-                    result.append(" ").append(" ").append(" ").append(" ")
-                          .append(key)
-                          .append(":")
-                          .append(" ")
-                          .append(entry.getValue()).append("\n");
+                // Nothing has done with the line.
+                if (firstMapValue.equals(secondMapValue)) {
+                    DifferItem differItem =
+                        new DifferItem(firstFileMapKey, firstMapValue, Action.NOTHING);
+                    resultDifferList.add(differItem);
                 }
 
-                if (!firstStringValue.equals(secondStringValue)) {
-                    result.append(stringMinusKey).append(":").append(" ")
-                          .append(entry.getValue()).append("\n");
-
-                    result.append(stringPlusKey).append(":").append(" ")
-                          .append(secondFileMap.get(key)).append("\n");
+                // Line has been changed.
+                if (!firstMapValue.equals(secondMapValue)) {
+                    DifferItem differItem =
+                        new DifferItem(firstFileMapKey, firstMapValue, Action.UPDATED, secondMapValue);
+                    resultDifferList.add(differItem);
                 }
             }
         }
 
-        for (String secondKey : secondFileMap.keySet()) {
-            String stringPlusKey = " " + " " + "+ " + secondKey;
+        // Here we're checking if a new line has been added to the file.
+        for (String secondMapKey : secondFileMap.keySet()) {
 
-            if (!firstFileMap.containsKey(secondKey)) {
-                result.append(stringPlusKey).append(":").append(" ")
-                      .append(secondFileMap.get(secondKey)).append("\n");
+            if (!firstFileMap.containsKey(secondMapKey)) {
+                DifferItem differItem =
+                    new DifferItem(secondMapKey, secondFileMap.get(secondMapKey) + "", Action.ADDED);
+                resultDifferList.add(differItem);
             }
         }
 
-        return "{" + "\n" + result + "}";
+        resultDifferList.sort((item1, item2) -> item1.getKey().compareTo(item2.getKey()));
+
+        return resultDifferList;
     }
 }

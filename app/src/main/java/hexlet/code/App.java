@@ -18,13 +18,14 @@ public class App implements Runnable {
     @CommandLine.Parameters(index = "1", description = "path to second file")
     private String filepath2;
 
-    @Option(names = {"-a", "--format"}, description = "output format [default: stylish]")
-    private String format;
+    @Option(names = {"-f", "--format"}, description = "output format [default: stylish]")
+    private String formatName;
 
     @Override
     public void run() {
         try {
-            Differ.checkFormat(filepath1, filepath2);
+            String diff = Differ.generate(filepath1, filepath2, formatName);
+            System.out.println(diff);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
