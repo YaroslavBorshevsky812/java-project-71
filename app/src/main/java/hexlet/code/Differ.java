@@ -24,10 +24,6 @@ public class Differ {
                     .toAbsolutePath().normalize();
     }
 
-    public static String getSomethingForTest(String testString) {
-        return testString;
-    }
-
     public static String readFile(String fileName) throws IOException {
         var path = getFilePath(fileName);
 
