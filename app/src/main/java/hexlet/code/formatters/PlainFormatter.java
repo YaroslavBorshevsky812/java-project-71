@@ -5,20 +5,30 @@ import java.util.List;
 
 public class PlainFormatter {
 
+    public static Object getValue(Object value) {
+        if (value == null || value.getClass().equals(Boolean.class)) {
+            return value + "";
+        }
+
+        if (value instanceof String) {
+            return String.format("'%s'", value);
+        }
+
+        return value instanceof Integer ? value : "[complex value]";
+    }
+
     public static String generatePlain(List<DifferItem> differItemList) {
         StringBuilder result = new StringBuilder();
 
         differItemList.forEach(differItem -> {
             String stringItem = null;
-
-            String value = differItem.getValue() + "";
-
-            String updatedValue = differItem.getUpdatedValue() + "";
+            Object value = PlainFormatter.getValue(differItem.getValue());
+            Object updatedValue = PlainFormatter.getValue(differItem.getUpdatedValue());
 
 
             switch (differItem.getAction()) {
                 case ADDED:
-                    stringItem = String.format("Property '%s' was added with value: [%s]",
+                    stringItem = String.format("Property '%s' was added with value: %s",
                                                differItem.getKey(),
                                                value);
                     break;
@@ -26,7 +36,7 @@ public class PlainFormatter {
                     stringItem = String.format("Property '%s' was removed", differItem.getKey());
                     break;
                 case UPDATED:
-                    stringItem = String.format("Property '%s' was updated. From [%s] to %s",
+                    stringItem = String.format("Property '%s' was updated. From %s to %s",
                                                differItem.getKey(),
                                                value,
                                                updatedValue);
@@ -35,10 +45,10 @@ public class PlainFormatter {
             }
 
             if (stringItem != null) {
-                result.append(" ").append(stringItem).append("\n");
+                result.append(stringItem).append("\n");
             }
         });
 
-        return "{" + "\n" + result + "}";
+        return ("\n" + result).trim();
     }
 }

@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Differ {
 
@@ -92,9 +93,8 @@ public class Differ {
         List<DifferItem> resultDifferList = new ArrayList<>();
 
         for (String firstFileMapKey : firstFileMap.keySet()) {
-            // Objects.equals(arg1, arg2)
-            String firstMapValue = firstFileMap.get(firstFileMapKey) + "";
-            String secondMapValue = secondFileMap.get(firstFileMapKey) + "";
+            Object firstMapValue = firstFileMap.get(firstFileMapKey);
+            Object secondMapValue = secondFileMap.get(firstFileMapKey);
 
             // Removal.
             if (!secondFileMap.containsKey(firstFileMapKey)) {
@@ -104,14 +104,15 @@ public class Differ {
 
             } else {
                 // Nothing has done with the line.
-                if (firstMapValue.equals(secondMapValue)) {
+                if (Objects.equals(firstMapValue, secondMapValue)) {
                     DifferItem differItem =
                         new DifferItem(firstFileMapKey, firstMapValue, Action.NOTHING);
                     resultDifferList.add(differItem);
                 }
 
                 // Line has been changed.
-                if (!firstMapValue.equals(secondMapValue)) {
+                if (!Objects.equals(firstMapValue, secondMapValue)) {
+
                     DifferItem differItem =
                         new DifferItem(firstFileMapKey, firstMapValue, Action.UPDATED, secondMapValue);
                     resultDifferList.add(differItem);
@@ -124,7 +125,7 @@ public class Differ {
 
             if (!firstFileMap.containsKey(secondMapKey)) {
                 DifferItem differItem =
-                    new DifferItem(secondMapKey, secondFileMap.get(secondMapKey) + "", Action.ADDED);
+                    new DifferItem(secondMapKey, secondFileMap.get(secondMapKey), Action.ADDED);
                 resultDifferList.add(differItem);
             }
         }

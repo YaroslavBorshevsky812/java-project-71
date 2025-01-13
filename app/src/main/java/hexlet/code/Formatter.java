@@ -8,6 +8,8 @@ public class Formatter {
     public static String getFormatter(List<DifferItem> differItemList, String formatName) {
         String result = "";
 
+
+
         if (formatName == null) {
             result = DiffFormatter.generateDiff(differItemList);
         } else {

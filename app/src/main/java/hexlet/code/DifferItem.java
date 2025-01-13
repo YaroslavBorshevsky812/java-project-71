@@ -7,13 +7,13 @@ public class DifferItem {
     public Object updatedValue;
     public Action action;
 
-    public DifferItem(String key, String value, Action action) {
+    public DifferItem(String key, Object value, Action action) {
         this.key = key;
         this.value = value;
         this.action = action;
     }
 
-    public DifferItem(String key, String value, Action action, String updatedValue) {
+    public DifferItem(String key, Object value, Action action, Object updatedValue) {
         this.key = key;
         this.value = value;
         this.updatedValue = updatedValue;
