@@ -85,6 +85,12 @@ public class Differ {
         return Formatter.getFormatter(differItemList, formatName);
     };
 
+    public static String generate(String filePath1, String filePath2) throws Exception {
+        List<DifferItem> differItemList = Differ.prepareListAccordingToFormat(filePath1, filePath2, null);
+
+        return Formatter.getFormatter(differItemList, null);
+    };
+
     public static List<DifferItem> generateDifferItemList(
         Map<String, Object> firstFileMap,
         Map<String, Object> secondFileMap,

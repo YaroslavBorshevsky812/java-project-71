@@ -31,7 +31,7 @@ class DifferTest {
         String jsonDiffResult = readFixture(jsonDiffFileName);
         String fileName1 = "file1.json";
         String fileName2 = "file2.json";
-        String diff = Differ.generate(fileName1, fileName2, null);
+        String diff = Differ.generate(fileName1, fileName2);
         assertEquals(jsonDiffResult, diff);
     }
 
@@ -40,7 +40,7 @@ class DifferTest {
         String yamlDiffResult = readFixture(yamlDiffFileName);
         String fileName1 = "filepath1.yml";
         String fileName2 = "filepath2.yml";
-        String diff = Differ.generate(fileName1, fileName2, null);
+        String diff = Differ.generate(fileName1, fileName2);
         assertEquals(yamlDiffResult, diff);
     }
 
@@ -49,7 +49,7 @@ class DifferTest {
         String jsonNestedDiffResult = readFixture(jsonNestedDiffFileName);
         String fileName1 = "nestedFile1.json";
         String fileName2 = "nestedFile2.json";
-        String diff = Differ.generate(fileName1, fileName2, null);
+        String diff = Differ.generate(fileName1, fileName2);
         assertEquals(jsonNestedDiffResult, diff);
     }
 
