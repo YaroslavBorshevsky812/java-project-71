@@ -1,0 +1,32 @@
+{
+  "added" : {
+    "verbose" : {
+      "key" : "verbose",
+      "value" : true,
+      "updatedValue" : null,
+      "action" : "ADDED"
+    }
+  },
+  "modified" : {
+    "timeout" : {
+      "key" : "timeout",
+      "value" : 50,
+      "updatedValue" : 20,
+      "action" : "UPDATED"
+    }
+  },
+  "removed" : {
+    "proxy" : {
+      "key" : "proxy",
+      "value" : "123.234.53.22",
+      "updatedValue" : null,
+      "action" : "DELETED"
+    },
+    "follow" : {
+      "key" : "follow",
+      "value" : false,
+      "updatedValue" : null,
+      "action" : "DELETED"
+    }
+  }
+}

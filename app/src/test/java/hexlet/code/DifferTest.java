@@ -14,6 +14,7 @@ class DifferTest {
     String yamlDiffFileName = "yamlDiff.txt";
     String jsonNestedDiffFileName = "jsonNested.txt";
     String plainNestedDiffFileName = "plainNestedDiff.txt";
+    String jsonFormatterResult = "newJson.json";
 
     private static Path getFixturePath(String fileName) {
         return Paths.get("src", "test", "resources", "fixtures", fileName)
@@ -59,5 +60,14 @@ class DifferTest {
         String fileName2 = "nestedFile2.json";
         String diff = Differ.generate(fileName1, fileName2, "plain");
         assertEquals(plainNestedDiffResult, diff);
+    }
+
+    @Test
+    void checkJSONFormatter() throws Exception {
+        String jsonFormatterExpectedResult = readFixture(jsonFormatterResult);
+        String fileName1 = "file1.json";
+        String fileName2 = "file2.json";
+        String diff = Differ.generate(fileName1, fileName2, "json");
+        assertEquals(jsonFormatterExpectedResult, diff);
     }
 }

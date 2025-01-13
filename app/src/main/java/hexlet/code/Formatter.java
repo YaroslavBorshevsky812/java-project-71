@@ -1,11 +1,14 @@
 package hexlet.code;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import hexlet.code.formatters.DiffFormatter;
+import hexlet.code.formatters.JSONFormatter;
 import hexlet.code.formatters.PlainFormatter;
 import java.util.List;
 
 public class Formatter {
-    public static String getFormatter(List<DifferItem> differItemList, String formatName) {
+    public static String getFormatter(List<DifferItem> differItemList, String formatName)
+        throws JsonProcessingException {
         String result = "";
 
 
@@ -17,9 +20,11 @@ public class Formatter {
                 case "plain" -> {
                     result = PlainFormatter.generatePlain(differItemList);
                 }
-                case "json" -> System.out.println("diff");
+                case "json" -> {
+                    result = JSONFormatter.generateJson(differItemList);
+                }
                 default -> {
-                    System.out.println("default");
+                    throw new IllegalArgumentException("There is no such a format");
                 }
             }
         }
