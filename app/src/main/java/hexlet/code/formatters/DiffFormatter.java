@@ -19,19 +19,19 @@ public class DiffFormatter {
             switch (differItem.getAction()) {
                 case ADDED:
                     stringItem =
-                        plus + differItem.getKey() + colon + differItem.getValue();
+                        plus + differItem.getKey() + colon + space + differItem.getValue();
                     break;
                 case DELETED:
                     stringItem =
-                        minus + differItem.getKey() + colon + differItem.getValue();
+                        minus + differItem.getKey() + colon + space + differItem.getValue();
                     break;
                 case NOTHING:
                     stringItem =
-                        space + space + space + differItem.getKey() + colon + differItem.getValue();
+                        space + space + space + differItem.getKey() + colon + space + differItem.getValue();
                     break;
                 case UPDATED:
-                    String previous = minus + differItem.getKey() + colon + differItem.getValue();
-                    String newValue = plus + differItem.getKey() + colon + differItem.getUpdatedValue();
+                    String previous = minus + differItem.getKey() + colon + space + differItem.getValue();
+                    String newValue = plus + differItem.getKey() + colon + space + differItem.getUpdatedValue();
                     stringItem =
                         previous + "\n" + space + newValue;
                     break;
