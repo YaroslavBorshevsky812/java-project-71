@@ -70,4 +70,13 @@ class DifferTest {
         String diff = Differ.generate(fileName1, fileName2, "json");
         assertEquals(jsonFormatterExpectedResult, diff);
     }
+
+    @Test
+    void checkStylishCase() throws Exception {
+        String jsonFormatterExpectedResult = readFixture(jsonDiffFileName);
+        String fileName1 = "src/main/resources/assets/file1.json";
+        String fileName2 = "src/main/resources/assets/file2.json";
+        String diff = Differ.generate(fileName1, fileName2, "stylish");
+        assertEquals(jsonFormatterExpectedResult, diff);
+    }
 }

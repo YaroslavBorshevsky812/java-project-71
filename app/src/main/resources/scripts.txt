@@ -4,3 +4,4 @@
 ./build/install/app/bin/app -f plain nestedFile1.json nestedFile2.json
 ./build/install/app/bin/app -f json nestedFile1.json nestedFile2.json
 ./build/install/app/bin/app -f json file1.json file2.json
+./build/install/app/bin/app src/main/resources/assets/nestedFile1.json src/main/resources/assets/nestedFile2.json

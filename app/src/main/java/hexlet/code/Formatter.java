@@ -9,26 +9,24 @@ import java.util.List;
 public class Formatter {
     public static String getFormatter(List<DifferItem> differItemList, String formatName)
         throws JsonProcessingException {
-        String result = "";
-
-
 
         if (formatName == null) {
-            result = DiffFormatter.generateDiff(differItemList);
-        } else {
-            switch (formatName) {
-                case "plain" -> {
-                    result = PlainFormatter.generatePlain(differItemList);
-                }
-                case "json" -> {
-                    result = JSONFormatter.generateJson(differItemList);
-                }
-                default -> {
-                    throw new IllegalArgumentException("There is no such a format");
-                }
-            }
+            return  DiffFormatter.generateDiff(differItemList);
         }
 
-        return result;
+        switch (formatName) {
+            case "plain" -> {
+                return PlainFormatter.generatePlain(differItemList);
+            }
+            case "stylish" -> {
+                return DiffFormatter.generateDiff(differItemList);
+            }
+            case "json" -> {
+                return JSONFormatter.generateJson(differItemList);
+            }
+            default -> {
+                throw new IllegalArgumentException("There is no such a format");
+            }
+        }
     }
 }
