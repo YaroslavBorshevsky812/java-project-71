@@ -1,11 +1,11 @@
 package hexlet.code;
 
-public class DifferItem {
+public final class DifferItem {
 
-    public String key;
-    public Object value;
-    public Object updatedValue;
-    public Action action;
+    private final String key;
+    private final Object value;
+    private Object updatedValue;
+    private final Action action;
 
     public DifferItem(String key, Object value, Action action) {
         this.key = key;

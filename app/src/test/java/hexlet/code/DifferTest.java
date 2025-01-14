@@ -10,12 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DifferTest {
 
-    String jsonDiffFileName = "jsonDiff.txt";
-    String yamlDiffFileName = "yamlDiff.txt";
-    String jsonNestedDiffFileName = "jsonNested.txt";
-    String plainNestedDiffFileName = "plainNestedDiff.txt";
-    String jsonFormatterResult = "newJson.json";
-
     private static Path getFixturePath(String fileName) {
         return Paths.get("src", "test", "resources", "fixtures", fileName)
                     .toAbsolutePath().normalize();
@@ -28,6 +22,7 @@ class DifferTest {
 
     @Test
     void checkIfJsonFileFormattingCorrect() throws Exception {
+        String jsonDiffFileName = "jsonDiff.txt";
         String jsonDiffResult = readFixture(jsonDiffFileName);
         String fileName1 = "src/main/resources/assets/file1.json";
         String fileName2 = "src/main/resources/assets/file2.json";
@@ -37,6 +32,7 @@ class DifferTest {
 
     @Test
     void checkIfYamlFileFormattingCorrect() throws Exception {
+        String yamlDiffFileName = "yamlDiff.txt";
         String yamlDiffResult = readFixture(yamlDiffFileName);
         String fileName1 = "src/main/resources/assets/filepath1.yml";
         String fileName2 = "src/main/resources/assets/filepath2.yml";
@@ -46,6 +42,7 @@ class DifferTest {
 
     @Test
     void checkIfNestedFileFormattingCorrect() throws Exception {
+        String jsonNestedDiffFileName = "jsonNested.txt";
         String jsonNestedDiffResult = readFixture(jsonNestedDiffFileName);
         String fileName1 = "src/main/resources/assets/nestedFile1.json";
         String fileName2 = "src/main/resources/assets/nestedFile2.json";
@@ -55,6 +52,7 @@ class DifferTest {
 
     @Test
     void checkPlainFormatter() throws Exception {
+        String plainNestedDiffFileName = "plainNestedDiff.txt";
         String plainNestedDiffResult = readFixture(plainNestedDiffFileName);
         String fileName1 = "src/main/resources/assets/nestedFile1.json";
         String fileName2 = "src/main/resources/assets/nestedFile2.json";
@@ -64,6 +62,7 @@ class DifferTest {
 
     @Test
     void checkJSONFormatter() throws Exception {
+        String jsonFormatterResult = "newJson.json";
         String jsonFormatterExpectedResult = readFixture(jsonFormatterResult);
         String fileName1 = "src/main/resources/assets/file1.json";
         String fileName2 = "src/main/resources/assets/file2.json";
@@ -73,6 +72,7 @@ class DifferTest {
 
     @Test
     void checkStylishCase() throws Exception {
+        String jsonDiffFileName = "jsonDiff.txt";
         String jsonFormatterExpectedResult = readFixture(jsonDiffFileName);
         String fileName1 = "src/main/resources/assets/file1.json";
         String fileName2 = "src/main/resources/assets/file2.json";

@@ -10,7 +10,7 @@ import picocli.CommandLine.Option;
     version = "checksum 4.0",
     description = "Compares two configuration files and shows a difference."
 )
-public class App implements Runnable {
+public final class App implements Runnable {
 
     @CommandLine.Parameters(index = "0", description = "path to first file")
     private String filepath1;

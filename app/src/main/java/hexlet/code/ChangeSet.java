@@ -3,7 +3,7 @@ package hexlet.code;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChangeSet {
+public final class ChangeSet {
     private Map<String, Object> added = new HashMap<>();
     private Map<String, Object> modified = new HashMap<>();
     private Map<String, Object> removed = new HashMap<>();
