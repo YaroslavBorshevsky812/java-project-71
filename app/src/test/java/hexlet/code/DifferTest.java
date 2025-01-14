@@ -29,8 +29,8 @@ class DifferTest {
     @Test
     void checkIfJsonFileFormattingCorrect() throws Exception {
         String jsonDiffResult = readFixture(jsonDiffFileName);
-        String fileName1 = "file1.json";
-        String fileName2 = "file2.json";
+        String fileName1 = "src/main/resources/assets/file1.json";
+        String fileName2 = "src/main/resources/assets/file2.json";
         String diff = Differ.generate(fileName1, fileName2);
         assertEquals(jsonDiffResult, diff);
     }
@@ -38,8 +38,8 @@ class DifferTest {
     @Test
     void checkIfYamlFileFormattingCorrect() throws Exception {
         String yamlDiffResult = readFixture(yamlDiffFileName);
-        String fileName1 = "filepath1.yml";
-        String fileName2 = "filepath2.yml";
+        String fileName1 = "src/main/resources/assets/filepath1.yml";
+        String fileName2 = "src/main/resources/assets/filepath2.yml";
         String diff = Differ.generate(fileName1, fileName2);
         assertEquals(yamlDiffResult, diff);
     }
@@ -47,8 +47,8 @@ class DifferTest {
     @Test
     void checkIfNestedFileFormattingCorrect() throws Exception {
         String jsonNestedDiffResult = readFixture(jsonNestedDiffFileName);
-        String fileName1 = "nestedFile1.json";
-        String fileName2 = "nestedFile2.json";
+        String fileName1 = "src/main/resources/assets/nestedFile1.json";
+        String fileName2 = "src/main/resources/assets/nestedFile2.json";
         String diff = Differ.generate(fileName1, fileName2);
         assertEquals(jsonNestedDiffResult, diff);
     }
@@ -56,8 +56,8 @@ class DifferTest {
     @Test
     void checkPlainFormatter() throws Exception {
         String plainNestedDiffResult = readFixture(plainNestedDiffFileName);
-        String fileName1 = "nestedFile1.json";
-        String fileName2 = "nestedFile2.json";
+        String fileName1 = "src/main/resources/assets/nestedFile1.json";
+        String fileName2 = "src/main/resources/assets/nestedFile2.json";
         String diff = Differ.generate(fileName1, fileName2, "plain");
         assertEquals(plainNestedDiffResult, diff);
     }
@@ -65,8 +65,8 @@ class DifferTest {
     @Test
     void checkJSONFormatter() throws Exception {
         String jsonFormatterExpectedResult = readFixture(jsonFormatterResult);
-        String fileName1 = "file1.json";
-        String fileName2 = "file2.json";
+        String fileName1 = "src/main/resources/assets/file1.json";
+        String fileName2 = "src/main/resources/assets/file2.json";
         String diff = Differ.generate(fileName1, fileName2, "json");
         assertEquals(jsonFormatterExpectedResult, diff);
     }
