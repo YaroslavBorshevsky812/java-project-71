@@ -21,7 +21,7 @@ public class Differ {
     private static final String JSON_FORMAT = ".*\\.(json)$";
 
     private static Path getFilePath(String fileName) {
-        return Paths.get("src", "main", "resources", "assets", fileName)
+        return Paths.get(fileName)
                     .toAbsolutePath().normalize();
     }
 
