@@ -1,7 +1,7 @@
 ./build/install/app/bin/app filepath1.yml filepath2.yml
-./build/install/app/bin/app src/main/resources/assets/file1.json src/main/resources/assets/file2.json
-./build/install/app/bin/app src/main/resources/assets/nestedFile1.json src/main/resources/assets/nestedFile2.json
-./build/install/app/bin/app -f plain nestedFile1.json nestedFile2.json
-./build/install/app/bin/app -f json nestedFile1.json nestedFile2.json
-./build/install/app/bin/app -f json file1.json file2.json
+./build/install/app/bin/app src/test/resources/fixtures/file1.json src/test/resources/fixtures/file2.json
+./build/install/app/bin/app src/test/resources/fixtures/nestedFile1.json src/test/resources/fixtures/nestedFile2.json
+./build/install/app/bin/app -f plain src/test/resources/fixtures/nestedFile1.json src/test/resources/fixtures/nestedFile2.json
+./build/install/app/bin/app -f json src/test/resources/fixtures/nestedFile1.json src/test/resources/fixtures/nestedFile2.json
+./build/install/app/bin/app -f json src/test/resources/fixtures/file1.json src/test/resources/fixtures/file2.json
 ./build/install/app/bin/app src/main/resources/assets/nestedFile1.json src/main/resources/assets/nestedFile2.json

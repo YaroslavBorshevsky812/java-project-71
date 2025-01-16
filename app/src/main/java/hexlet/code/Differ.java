@@ -10,9 +10,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 public class Differ {
 
@@ -45,8 +47,7 @@ public class Differ {
 
     public static List<DifferItem> prepareListAccordingToFormat(
         String firstFilePath,
-        String secondFilePath,
-        String formatName
+        String secondFilePath
     ) throws IOException {
 
         List<DifferItem> result = new ArrayList<>();
@@ -56,15 +57,19 @@ public class Differ {
                 || firstFilePath.matches(JSON_FORMAT) && secondFilePath.matches(JSON_FORMAT)
             );
 
-        if (!isFormatAcceptable || !isFormatsTheSame) {
+        if (!isFormatAcceptable) {
             throw new IllegalArgumentException("Formats are not acceptable");
+        }
+
+        if (!isFormatsTheSame) {
+            throw new IllegalArgumentException("You try to use files with different formats");
         }
 
         if (firstFilePath.matches(YAML_FORMAT) && secondFilePath.matches(YAML_FORMAT)) {
             Map<String, Object> firstMap = Differ.getYmlData(firstFilePath);
             Map<String, Object> secondMap = Differ.getYmlData(secondFilePath);
 
-            result = Differ.generateDifferItemList(firstMap, secondMap, formatName);
+            result = Differ.generateDifferItemList(firstMap, secondMap);
             return result;
         }
 
@@ -72,67 +77,58 @@ public class Differ {
             Map<String, Object> firstMap = Differ.getJsonData(Differ.readFile(firstFilePath));
             Map<String, Object> secondMap = Differ.getJsonData(Differ.readFile(secondFilePath));
 
-            result = Differ.generateDifferItemList(firstMap, secondMap, formatName);
+            result = Differ.generateDifferItemList(firstMap, secondMap);
             return result;
         }
 
         return result;
-    };
+    }
 
     public static String generate(String filePath1, String filePath2, String formatName) throws Exception {
-        List<DifferItem> differItemList = Differ.prepareListAccordingToFormat(filePath1, filePath2, formatName);
+        List<DifferItem> differItemList = Differ.prepareListAccordingToFormat(filePath1, filePath2);
 
         return Formatter.getFormatter(differItemList, formatName);
-    };
+    }
 
     public static String generate(String filePath1, String filePath2) throws Exception {
-        List<DifferItem> differItemList = Differ.prepareListAccordingToFormat(filePath1, filePath2, null);
-
-        return Formatter.getFormatter(differItemList, null);
-    };
+        return generate(filePath1, filePath2, "stylish");
+    }
 
     public static List<DifferItem> generateDifferItemList(
         Map<String, Object> firstFileMap,
-        Map<String, Object> secondFileMap,
-        String formatName
+        Map<String, Object> secondFileMap
     ) {
         List<DifferItem> resultDifferList = new ArrayList<>();
 
-        for (String firstFileMapKey : firstFileMap.keySet()) {
-            Object firstMapValue = firstFileMap.get(firstFileMapKey);
-            Object secondMapValue = secondFileMap.get(firstFileMapKey);
+        Set<String> allKeys = new HashSet<>();
+        allKeys.addAll(firstFileMap.keySet());
+        allKeys.addAll(secondFileMap.keySet());
 
-            // Removal.
-            if (!secondFileMap.containsKey(firstFileMapKey)) {
-                DifferItem differItem =
-                    new DifferItem(firstFileMapKey, firstMapValue, Action.DELETED);
-                resultDifferList.add(differItem);
+        for (String key : allKeys) {
+            Object firstMapValue = firstFileMap.get(key);
+            Object secondMapValue = secondFileMap.get(key);
 
-            } else {
-                // Nothing has done with the line.
+            if (firstFileMap.containsKey(key) && secondFileMap.containsKey(key)) {
+
                 if (Objects.equals(firstMapValue, secondMapValue)) {
-                    DifferItem differItem =
-                        new DifferItem(firstFileMapKey, firstMapValue, Action.NOTHING);
+                    // Nothing has been done with the line
+                    DifferItem differItem = new DifferItem(key, firstMapValue, Action.NOTHING);
+                    resultDifferList.add(differItem);
+                } else {
+                    // Line has been changed
+                    DifferItem differItem = new DifferItem(key, firstMapValue, Action.UPDATED, secondMapValue);
                     resultDifferList.add(differItem);
                 }
-
-                // Line has been changed.
-                if (!Objects.equals(firstMapValue, secondMapValue)) {
-
-                    DifferItem differItem =
-                        new DifferItem(firstFileMapKey, firstMapValue, Action.UPDATED, secondMapValue);
+            } else {
+                if (firstMapValue == null) {
+                    // Line has been added.
+                    DifferItem differItem = new DifferItem(key, secondMapValue, Action.ADDED);
+                    resultDifferList.add(differItem);
+                } else if (secondMapValue == null) {
+                    // Line has been deleted
+                    DifferItem differItem = new DifferItem(key, firstMapValue, Action.DELETED);
                     resultDifferList.add(differItem);
                 }
-            }
-        }
-
-        // Here we're checking if a new line has been added to the file.
-        for (String secondMapKey : secondFileMap.keySet()) {
-
-            if (!firstFileMap.containsKey(secondMapKey)) {
-                DifferItem differItem =
-                    new DifferItem(secondMapKey, secondFileMap.get(secondMapKey), Action.ADDED);
-                resultDifferList.add(differItem);
             }
         }
 

@@ -1,32 +1,33 @@
 {
-  "added" : {
-    "verbose" : {
-      "key" : "verbose",
-      "value" : true,
-      "updatedValue" : null,
-      "action" : "ADDED"
-    }
+  "proxy" : {
+    "key" : "proxy",
+    "value" : "123.234.53.22",
+    "updatedValue" : null,
+    "action" : "DELETED"
   },
-  "modified" : {
-    "timeout" : {
-      "key" : "timeout",
-      "value" : 50,
-      "updatedValue" : 20,
-      "action" : "UPDATED"
-    }
+  "host" : {
+    "key" : "host",
+    "value" : "hexlet.io",
+    "updatedValue" : null,
+    "action" : "NOTHING"
   },
-  "removed" : {
-    "proxy" : {
-      "key" : "proxy",
-      "value" : "123.234.53.22",
-      "updatedValue" : null,
-      "action" : "DELETED"
-    },
-    "follow" : {
-      "key" : "follow",
-      "value" : false,
-      "updatedValue" : null,
-      "action" : "DELETED"
-    }
+  "follow" : {
+    "key" : "follow",
+    "value" : false,
+    "updatedValue" : null,
+    "action" : "DELETED"
+  },
+  "timeout" : {
+    "key" : "timeout",
+    "value" : 50,
+    "updatedValue" : 20,
+    "action" : "UPDATED"
+  },
+  "verbose" : {
+    "key" : "verbose",
+    "value" : true,
+    "updatedValue" : null,
+    "action" : "ADDED"
   }
 }
+
