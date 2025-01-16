@@ -51,8 +51,8 @@ class DifferTest {
 
     @ParameterizedTest
     @CsvSource({
-        "file1.txt, file2.txt, Formats are not acceptable",
-        "file1.yml, file2.json, You try to use files with different formats",
+        "file1.xml, file2.txt, Formats are not acceptable",
+        "file1.xml, file2.xml, Formats are not acceptable",
     })
     void checkIllegalArgumentExceptionException(String fileName1, String fileName2, String expectedMessage) {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {

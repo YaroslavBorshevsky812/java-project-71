@@ -51,18 +51,14 @@ public class Differ {
     ) throws IOException {
 
         List<DifferItem> result = new ArrayList<>();
-        boolean isFormatAcceptable = firstFilePath.matches(FORMATS) && secondFilePath.matches(FORMATS);
+
         boolean isFormatsTheSame =
             (firstFilePath.matches(YAML_FORMAT) && secondFilePath.matches(YAML_FORMAT)
                 || firstFilePath.matches(JSON_FORMAT) && secondFilePath.matches(JSON_FORMAT)
             );
 
-        if (!isFormatAcceptable) {
-            throw new IllegalArgumentException("Formats are not acceptable");
-        }
-
         if (!isFormatsTheSame) {
-            throw new IllegalArgumentException("You try to use files with different formats");
+            throw new IllegalArgumentException("Formats are not acceptable");
         }
 
         if (firstFilePath.matches(YAML_FORMAT) && secondFilePath.matches(YAML_FORMAT)) {
