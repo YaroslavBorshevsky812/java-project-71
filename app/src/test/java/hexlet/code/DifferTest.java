@@ -1,10 +1,8 @@
 package hexlet.code;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import java.lang.reflect.Executable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,7 +33,8 @@ class DifferTest {
         "newJson.json, file1.json, file2.json, json",
         "jsonDiff.txt, file1.json, file2.json, stylish"
     })
-    void checkFormatting(String expectedResultFileName, String fileName1, String fileName2, String format) throws Exception {
+    void checkFormatting(String expectedResultFileName, String fileName1, String fileName2, String format
+    ) throws Exception {
         String expectedResult = readFixture(expectedResultFileName);
         Path filePath1 = getFixturePath(fileName1);
         Path filePath2 = getFixturePath(fileName2);
