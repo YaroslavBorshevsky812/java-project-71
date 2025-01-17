@@ -104,28 +104,27 @@ public class Differ {
             Object firstMapValue = firstFileMap.get(key);
             Object secondMapValue = secondFileMap.get(key);
 
+            DifferItem differItem = null;
+
             if (firstFileMap.containsKey(key) && secondFileMap.containsKey(key)) {
 
                 if (Objects.equals(firstMapValue, secondMapValue)) {
                     // Nothing has been done with the line
-                    DifferItem differItem = new DifferItem(key, firstMapValue, Action.NOTHING);
-                    resultDifferList.add(differItem);
+                    differItem = new DifferItem(key, firstMapValue, Action.NOTHING);
                 } else {
                     // Line has been changed
-                    DifferItem differItem = new DifferItem(key, firstMapValue, Action.UPDATED, secondMapValue);
-                    resultDifferList.add(differItem);
+                    differItem = new DifferItem(key, firstMapValue, Action.UPDATED, secondMapValue);
                 }
             } else {
                 if (firstMapValue == null) {
                     // Line has been added.
-                    DifferItem differItem = new DifferItem(key, secondMapValue, Action.ADDED);
-                    resultDifferList.add(differItem);
+                    differItem = new DifferItem(key, secondMapValue, Action.ADDED);
                 } else if (secondMapValue == null) {
                     // Line has been deleted
-                    DifferItem differItem = new DifferItem(key, firstMapValue, Action.DELETED);
-                    resultDifferList.add(differItem);
+                    differItem = new DifferItem(key, firstMapValue, Action.DELETED);
                 }
             }
+            resultDifferList.add(differItem);
         }
 
         resultDifferList.sort((item1, item2) -> item1.getKey().compareTo(item2.getKey()));
